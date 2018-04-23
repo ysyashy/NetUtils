@@ -1,4 +1,5 @@
 #include "NetUtils.h"
+#include "http/SendDataHttp.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

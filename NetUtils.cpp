@@ -1,4 +1,5 @@
 #include "NetUtils.h"
+#include "http/SendDataHttp.h"
 #include <QPainter>
 #include <QBrush>
 
@@ -42,7 +43,7 @@ NetUtils::NetUtils(QWidget *parent)
     _mainWidget = new QWidget(this);
 
     _tabWidget = new QTabWidget(_mainWidget);
-    _tabWidget->addTab(new QWidget(_tabWidget), "http");
+    _tabWidget->addTab(new SendDataHttp(_tabWidget), "http");
     _tabWidget->addTab(new QWidget(_tabWidget), "tcp");
     _tabWidget->addTab(new QWidget(_tabWidget), "capture");
     _tabWidget->setCurrentIndex(1);
