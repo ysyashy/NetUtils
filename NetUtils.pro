@@ -23,3 +23,6 @@ HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
         parse/ParseData.h\
         tcp/SendDataTcp.h
+
+RESOURCES += \
+    Resources/netutils.qrc

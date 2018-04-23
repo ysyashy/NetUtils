@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/common/top">
+        <file>btn_close.png</file>
+        <file>btn_minimum.png</file>
+    </qresource>
+</RCC>
