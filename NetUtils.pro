@@ -17,12 +17,14 @@ SOURCES += main.cpp\
         NetUtils.cpp\
         http/SendDataHttp.cpp\
         parse/ParseData.cpp\
-        tcp/SendDataTcp.cpp
+        tcp/SendDataTcp.cpp \
+    tcp/SendDataItem.cpp
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
         parse/ParseData.h\
-        tcp/SendDataTcp.h
+        tcp/SendDataTcp.h \
+    tcp/SendDataItem.h
 
 RESOURCES += \
     Resources/netutils.qrc

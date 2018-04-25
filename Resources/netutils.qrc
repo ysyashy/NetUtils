@@ -3,4 +3,7 @@
         <file>btn_close.png</file>
         <file>btn_minimum.png</file>
     </qresource>
+    <qresource prefix="/http">
+        <file>httpContentType.txt</file>
+    </qresource>
 </RCC>

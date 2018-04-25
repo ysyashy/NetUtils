@@ -1,4 +1,5 @@
 #include "SendDataHttp.h"
+#include <sstream>
 #include <QProcess>
 
 namespace yang {
@@ -17,6 +18,7 @@ SendDataHttp::SendDataHttp(QWidget *parent)
     _comboBox = new QComboBox(this);
     _comboBox->addItem("GET", QVariant(0));
     _comboBox->addItem("POST", QVariant(1));
+    initContentTypeMap();
 }
 SendDataHttp::~SendDataHttp()
 {
@@ -76,7 +78,8 @@ void SendDataHttp::received_Data(QNetworkReply *reply)
         recv.close();
         // QProcess *p = new QProcess(this);
         // p->start("C:\Windows\System32\cmd.exe /c C:\Windows\explorer.exe E:\qt_project\build-NetUtils-Desktop_Qt_5_7_0_MinGW_32bit-Debug\text.html");
-        QProcess::execute("explorer.exe C:\\Users\\ysyas\\.gitconfig");
+//        QProcess::execute("explorer.exe C:\\Users\\ysyas\\.gitconfig");
+        QProcess::execute("explorer.exe text.html");
     } else {
         qDebug() << reply->errorString();
     }
@@ -90,4 +93,20 @@ void SendDataHttp::resizeEvent(QResizeEvent *event)
     _btn_send->setGeometry(width() * 0.55, height() * 0.55, width() * 0.15, height() * 0.1);
     QWidget::resizeEvent(event);
 }
+
+void SendDataHttp::initContentTypeMap()
+{
+    QFile file(":/http/httpContentType.txt");
+    file.open(QFile::ReadOnly);
+    std::string txt = file.readAll().toStdString();
+    file.close();
+
+    std::stringstream in(txt);
+    std::string key, value;
+    while(!in.eof()){
+        in >> value >> key;
+        _contentType_map.emplace(key, value);
+    }
+}
+
 }

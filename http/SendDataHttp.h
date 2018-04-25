@@ -28,7 +28,9 @@ private:
     QLabel *_labelParams;
 private:
     /* http相关 */
+    /* contenType:prefix */
     std::unordered_map<std::string, std::string> _contentType_map;
+    void initContentTypeMap();
     void request_by_get(const QString &url);
     void request_by_post(const QString &url);
 private slots:
