@@ -30,6 +30,8 @@ private:
     /* http相关 */
     /* contenType:prefix */
     std::unordered_map<std::string, std::string> _contentType_map;
+    /* 根据contentType获取文件名的后缀 */
+    inline std::string getSuffix(const std::string &contentType);
     void initContentTypeMap();
     void request_by_get(const QString &url);
     void request_by_post(const QString &url);

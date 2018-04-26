@@ -8,7 +8,7 @@ SendDataItem::SendDataItem(QWidget *parent, const QSize &size)
 {
     resize(size);
     _btn_remove = new QPushButton(this);
-    _lineEdit = new QPushButton(this);
+    _lineEdit = new QLineEdit(this);
     _comboBox = new QComboBox(this);
 }
 
@@ -18,5 +18,9 @@ SendDataItem::~SendDataItem()
 void SendDataItem::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
+}
+void SendDataItem::remove_btn_clicked()
+{
+
 }
 }

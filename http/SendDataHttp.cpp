@@ -66,8 +66,14 @@ void SendDataHttp::received_Data(QNetworkReply *reply)
     if(!reply) {
         qDebug() << "QNetworkReply is nullptr";
     } else if(reply->error() == QNetworkReply::NoError){
+        QString filename = "text";
+        std::string all_header = reply->header(QNetworkRequest::ContentTypeHeader).toString().toStdString();
+        /* http contentType 也可能分为多段，用分号隔开 */
+        std::string header = all_header.substr(0, all_header.find_first_of(';'));
+        filename.append(getSuffix(header).c_str());
+
         QByteArray data = reply->readAll();
-        QFile recv("./text.html");
+        QFile recv(filename);
         if(recv.exists()){
             recv.remove();
         }
@@ -76,10 +82,7 @@ void SendDataHttp::received_Data(QNetworkReply *reply)
         }
         recv.write(data);
         recv.close();
-        // QProcess *p = new QProcess(this);
-        // p->start("C:\Windows\System32\cmd.exe /c C:\Windows\explorer.exe E:\qt_project\build-NetUtils-Desktop_Qt_5_7_0_MinGW_32bit-Debug\text.html");
-//        QProcess::execute("explorer.exe C:\\Users\\ysyas\\.gitconfig");
-        QProcess::execute("explorer.exe text.html");
+        QProcess::execute("explorer.exe", QStringList() << filename);
     } else {
         qDebug() << reply->errorString();
     }
@@ -107,6 +110,14 @@ void SendDataHttp::initContentTypeMap()
         in >> value >> key;
         _contentType_map.emplace(key, value);
     }
+}
+
+std::string SendDataHttp::getSuffix(const std::string &contentType)
+{
+    if(_contentType_map.count(contentType) <= 0)
+        return "";
+    else
+        return _contentType_map[contentType];
 }
 
 }
