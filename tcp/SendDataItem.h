@@ -12,7 +12,7 @@ class SendDataItem : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SendDataItem(QWidget *parent, const QSize &size = QSize(200, 20));
+    explicit SendDataItem(const QSize &size = QSize(200, 20), QWidget *parent = nullptr);
     virtual ~SendDataItem();
     QByteArray getItemData();
 protected:
