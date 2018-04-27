@@ -5,6 +5,7 @@
 #include <cinttypes>
 #include <QWidget>
 #include <QEvent>
+#include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
@@ -14,12 +15,13 @@ class SendDataItem : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SendDataItem(const QSize &size = QSize(200, 20), QWidget *parent = nullptr);
+    explicit SendDataItem(int index, const QSize &size = QSize(200, 20), QWidget *parent = nullptr);
     virtual ~SendDataItem();
     QByteArray getItemData();
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
 private:
+    QLabel *_labelNumber;
     QComboBox *_comboBox;
     QLineEdit *_lineEdit;
     QPushButton *_btn_remove;

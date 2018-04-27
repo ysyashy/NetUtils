@@ -5,6 +5,7 @@
 namespace yang {
 SendDataTcp::SendDataTcp(QWidget *parent)
     : QWidget(parent),
+      _tcpSocket(nullptr),
       _lineEditHost(nullptr),
       _lineEditPort(nullptr),
       _btnSend(nullptr),
@@ -13,6 +14,10 @@ SendDataTcp::SendDataTcp(QWidget *parent)
       _listWidget(nullptr),
       _btnAdd(nullptr)
 {
+    _tcpSocket = new QTcpSocket(this);
+    connect(_tcpSocket, &QTcpSocket::connected, this, &SendDataTcp::sendTcpData);
+    connect(_tcpSocket, &QTcpSocket::readyRead, this, &SendDataTcp::receivedTcpData);
+
     _labelPort = new QLabel(tr("端口"), this);
     _labelHost = new QLabel(tr("主机"), this);
     _btnSend = new QPushButton(tr("发送"), this);
@@ -36,13 +41,42 @@ void SendDataTcp::addListItem()
     QListWidgetItem *item = new QListWidgetItem();
     item->setSizeHint(_itemSize);
 
-    SendDataItem *widget = new SendDataItem(_itemSize);
+    SendDataItem *widget = new SendDataItem(_listWidget->count(), _itemSize);
     _listWidget->insertItem(_listWidget->count()-1, item);
     _listWidget->setItemWidget(item, widget);
+    _listWidget->scrollToBottom();
+    connect(widget, &SendDataItem::removeItemSignal, this, [=](){
+        _listWidget->removeItemWidget(item);
+        if(nullptr != item) delete item;
+        if(nullptr != widget) delete widget;
+    });
+}
+
+void SendDataTcp::on_btn_send_clicked()
+{
+    _tcpSocket->connectToHost(QHostAddress::LocalHost , 9999);
+}
+void SendDataTcp::SendDataTcp()
+{
+    QByteArray bytes;
+    for(int idx = 0; idx < _listWidget->size(); idx++) {
+        SendDataItem *item = dynamic_cast<SendDataItem*>(_listWidget->itemWidget(item(idx)));
+        if(nullptr == item) continue;
+        bytes.append(item->getItemData());
+    }
+    if(bytes.isEmpty()) return;
+    _tcpSocket->write(bytes);
+}
+void SendDataTcp::receivedTcpData()
+{
+    QByteArray bytes = _tcpSocket->readAll();
+    qDebug() << bytes.size();
+    _tcpSocket->close();
 }
 
 SendDataTcp::~SendDataTcp()
 {
+
 }
 
 void SendDataTcp::resizeEvent(QResizeEvent *event)

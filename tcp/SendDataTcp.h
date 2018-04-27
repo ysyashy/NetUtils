@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
+#include <QTcpSocket>
 
 namespace yang {
 class SendDataTcp : public QWidget
@@ -18,6 +19,10 @@ protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void paintEvent(QPaintEvent *event) override;
 private:
+    void sendTcpData();
+    void receivedTcpData();
+private:
+    QTcpSocket *_tcpSocket;
     QLineEdit *_lineEditHost;
     QLineEdit *_lineEditPort;
     QPushButton *_btnSend;
@@ -31,6 +36,7 @@ private:
     QPushButton *_btnAdd;
 private slots:
     void addListItem();
+    void on_btn_send_clicked();
 };
 }
 

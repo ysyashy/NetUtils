@@ -1,6 +1,7 @@
 #include "SendDataItem.h"
+#include <QDebug>
 namespace yang {
-SendDataItem::SendDataItem(const QSize &size, QWidget *parent)
+SendDataItem::SendDataItem(int index, const QSize &size, QWidget *parent)
     : QWidget(parent),
       _comboBox(nullptr),
       _lineEdit(nullptr),
@@ -34,9 +35,52 @@ void SendDataItem::remove_btn_clicked()
     emit removeItemSignal();
 }
 
+QByteArray SendDataItem::getItemData()
+{
+    QByteArray bytes;
+    bytes.clear();
+    std::string typeName = _comboBox->currentText().toStdString();
+    QString value = _lineEdit->text();
+
+    QDataStream out(&bytes, QIODevice::WriteOnly);
+    if(0 == typeName.compare("string")) {
+        out << value.toStdString().c_str();
+        return bytes;
+    }
+    value = value.trimmed();
+    if(0 == value.size()) {
+        return bytes;
+    }
+    if(0 == typeName.compare("char") || 0 == typeName.compare("u_char")) {
+        out << (signed char)value.toStdString().at(0);
+    } else if(0 == typeName.compare("int8_t")) {
+        out << (qint8)value.toLongLong();
+    } else if(0 == typeName.compare("int16_t")) {
+        out << (qint16)value.toLongLong();
+    } else if(0 == typeName.compare("int32_t")) {
+        out << (qint32)value.toLongLong();
+    } else if(0 == typeName.compare("int64_t")) {
+        out << (int64_t)value.toLongLong();
+    } else if(0 == typeName.compare("uint8_t")) {
+        out << (uint8_t)value.toLongLong();
+    } else if(0 == typeName.compare("uint16_t")) {
+        out << (int16_t)value.toLongLong();
+    } else if(0 == typeName.compare("uint32_t")) {
+        out << (int32_t)value.toLongLong();
+    } else if(0 == typeName.compare("uint64_t")) {
+        out << (int64_t)value.toLongLong();
+    } else if(0 == typeName.compare("float")) {
+        out << (float)value.toFloat();
+    } else if(0 == typeName.compare("double")) {
+        out << (double)value.toDouble();
+    }
+    qDebug() << bytes.size();
+    return bytes;
+}
+
 void SendDataItem::text_value_changed(const QString &text)
 {
-
+    text.size();
 }
 
 void SendDataItem::initComboBox()
