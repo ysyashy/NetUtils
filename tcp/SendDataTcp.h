@@ -26,6 +26,7 @@ private:
     QLineEdit *_lineEditHost;
     QLineEdit *_lineEditPort;
     QPushButton *_btnSend;
+    QPushButton *_btnAdvance;
 
     QLabel *_labelHost;
     QLabel *_labelPort;

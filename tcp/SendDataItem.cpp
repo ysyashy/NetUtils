@@ -3,11 +3,14 @@
 namespace yang {
 SendDataItem::SendDataItem(int index, const QSize &size, QWidget *parent)
     : QWidget(parent),
+      _labelNumber(nullptr),
       _comboBox(nullptr),
       _lineEdit(nullptr),
       _btn_remove(nullptr)
 {
     resize(size);
+    _labelNumber = new QLabel(this);
+    _labelNumber->setText(std::to_string(index).c_str());
     _btn_remove = new QPushButton(tr("删除"), this);
     _lineEdit = new QLineEdit(this);
     _comboBox = new QComboBox(this);
@@ -19,12 +22,17 @@ SendDataItem::SendDataItem(int index, const QSize &size, QWidget *parent)
 SendDataItem::~SendDataItem()
 {
 }
+void SendDataItem::updateIndex(int index)
+{
+    _labelNumber->setText(std::to_string(index).c_str());
+}
 
 void SendDataItem::resizeEvent(QResizeEvent *event)
 {
     int wd = size().width();
     int ht = size().height();
-    _comboBox->setGeometry(0, 0.1*ht, 0.2*wd, 0.9*ht);
+    _labelNumber->setGeometry(0, 0.1*ht, 0.05*wd, 0.9*ht);
+    _comboBox->setGeometry(0.05*wd, 0.1*ht, 0.15*wd, 0.9*ht);
     _lineEdit->setGeometry(0.22*wd, 0.1*ht, 0.71*wd, 0.9*ht);
     _btn_remove->setGeometry(0.95*wd, 0.1*ht, 0.05*wd, 0.9*ht);
 
@@ -44,7 +52,9 @@ QByteArray SendDataItem::getItemData()
 
     QDataStream out(&bytes, QIODevice::WriteOnly);
     if(0 == typeName.compare("string")) {
-        out << value.toStdString().c_str();
+        for(int i=0; i<value.size(); i++) {
+            bytes.append(value.at(i));
+        }
         return bytes;
     }
     value = value.trimmed();
@@ -70,7 +80,10 @@ QByteArray SendDataItem::getItemData()
     } else if(0 == typeName.compare("uint64_t")) {
         out << (int64_t)value.toLongLong();
     } else if(0 == typeName.compare("float")) {
-        out << (float)value.toFloat();
+        char ptr[4];    memset(ptr, 0x00, sizeof(ptr));
+        float f = value.toFloat();
+        memcpy(ptr, &f, sizeof(float));
+        for(int i=3; i>=0; i--)  bytes.append(ptr[i]);
     } else if(0 == typeName.compare("double")) {
         out << (double)value.toDouble();
     }

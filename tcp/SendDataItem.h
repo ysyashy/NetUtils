@@ -18,6 +18,7 @@ public:
     explicit SendDataItem(int index, const QSize &size = QSize(200, 20), QWidget *parent = nullptr);
     virtual ~SendDataItem();
     QByteArray getItemData();
+    void updateIndex(int index);
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
 private:
