@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     tcp/SendDataItem.cpp \
     parse/ParseDataTcp.cpp \
     parse/ParseDataPlainText.cpp \
-    parse/ParseDataTcpItem.cpp
+    parse/ParseDataTcpItem.cpp \
+    capture/CaptureWidget.cpp \
+    capture/CaptureItem.cpp \
+    AdvanceWidget.cpp
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
@@ -30,7 +33,15 @@ HEADERS  += NetUtils.h\
     tcp/SendDataItem.h \
     parse/ParseDataTcp.h \
     parse/ParseDataPlainText.h \
-    parse/ParseDataTcpItem.h
+    parse/ParseDataTcpItem.h \
+    capture/CaptureWidget.h \
+    capture/CaptureItem.h \
+    AdvanceWidget.h
 
 RESOURCES += \
     Resources/netutils.qrc
+
+FORMS += \
+    capture/CaptureWidget.ui \
+    capture/CaptureItem.ui \
+    AdvanceWidget.ui

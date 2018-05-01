@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdvanceWidget</class>
+ <widget class="QWidget" name="AdvanceWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QComboBox" name="cboxCompress">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>80</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>quicklz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>fastlz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>snappy</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>LZO/miniLZO</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cboxSecret">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>120</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>RC4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>RC5</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>DES</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>AES</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>DES</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="btnCancel">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>260</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>取消</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnOk">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>260</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>80</y>
+     <width>54</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>压缩算法</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>54</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>加密算法</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEditSecret">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>120</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
