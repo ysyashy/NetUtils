@@ -20,9 +20,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>50</y>
+     <y>80</y>
      <width>854</width>
-     <height>400</height>
+     <height>370</height>
     </rect>
    </property>
   </widget>
@@ -30,7 +30,7 @@
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>15</y>
+     <y>40</y>
      <width>626</width>
      <height>23</height>
     </rect>
@@ -92,7 +92,7 @@ color:red;
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="btnAdvance">
    <property name="geometry">
     <rect>
      <x>790</x>
@@ -103,6 +103,29 @@ color:red;
    </property>
    <property name="text">
     <string>高级选项</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBoxInter">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>500</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_inter">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>10</y>
+     <width>54</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>网络接口</string>
    </property>
   </widget>
  </widget>

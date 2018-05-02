@@ -12,11 +12,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NetUtils
 TEMPLATE = app
 
-# winpcap相关的库
+# winpcap
 INCLUDEPATH += "./winpcap/Include"
 LIBS += -L./winpcap/Lib -lwpcap
 LIBS += -L./winpcap/Lib -lPacket
-# ws2_32.lib Windows Socket的lib库
+# ws2_32.lib Windows Socket
 LIBS += -lws2_32
 
 
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     parse/ParseDataTcpItem.cpp \
     capture/CaptureWidget.cpp \
     capture/CaptureItem.cpp \
-    AdvanceWidget.cpp
+    AdvanceWidget.cpp \
+    capture/SystemDevice.cpp
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
@@ -43,7 +44,9 @@ HEADERS  += NetUtils.h\
     parse/ParseDataTcpItem.h \
     capture/CaptureWidget.h \
     capture/CaptureItem.h \
-    AdvanceWidget.h
+    AdvanceWidget.h \
+    capture/SystemDevice.h \
+    capture/comstruct.h
 
 RESOURCES += \
     Resources/netutils.qrc
