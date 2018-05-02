@@ -12,6 +12,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NetUtils
 TEMPLATE = app
 
+# winpcap相关的库
+INCLUDEPATH += "./winpcap/Include"
+LIBS += -L./winpcap/Lib -lwpcap
+LIBS += -L./winpcap/Lib -lPacket
+# ws2_32.lib Windows Socket的lib库
+LIBS += -lws2_32
+
 
 SOURCES += main.cpp\
         NetUtils.cpp\
