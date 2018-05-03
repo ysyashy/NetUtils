@@ -14,8 +14,10 @@ TEMPLATE = app
 
 # winpcap
 INCLUDEPATH += "./winpcap/Include"
-LIBS += -L./winpcap/Lib -lwpcap
-LIBS += -L./winpcap/Lib -lPacket
+# LIBS += -L./winpcap/Lib -lwpcap
+# LIBS += -L./winpcap/Lib -lPacket
+LIBS += D:\c++\NetUtils\winpcap\Lib\wpcap.lib
+LIBS += D:\c++\NetUtils\winpcap\Lib\Packet.lib
 # ws2_32.lib Windows Socket
 LIBS += -lws2_32
 
@@ -32,7 +34,9 @@ SOURCES += main.cpp\
     capture/CaptureWidget.cpp \
     capture/CaptureItem.cpp \
     AdvanceWidget.cpp \
-    capture/SystemDevice.cpp
+    capture/SystemDevice.cpp \
+    capture/DumpInterface.cpp \
+    capture/DumpThread.cpp
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
@@ -46,7 +50,9 @@ HEADERS  += NetUtils.h\
     capture/CaptureItem.h \
     AdvanceWidget.h \
     capture/SystemDevice.h \
-    capture/comstruct.h
+    capture/comstruct.h \
+    capture/DumpInterface.h \
+    capture/DumpThread.h
 
 RESOURCES += \
     Resources/netutils.qrc

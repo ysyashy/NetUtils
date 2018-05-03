@@ -28,7 +28,7 @@ void SystemDevice::destoryInstance()
 bool SystemDevice::init()
 {
     pcap_if_t *devs;
-    char errbuff[PCAP_ERRBUF_SIZE];
+    char errbuff[PCAP_ERRBUF_SIZE + 1];
     if(-1 == pcap_findalldevs(&devs, errbuff)) {
         return false;
     }
