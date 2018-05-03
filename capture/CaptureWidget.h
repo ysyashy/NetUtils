@@ -19,11 +19,14 @@ private slots:
     void on_btnStart_clicked();
     void on_btnAdvance_clicked();
 
-    void deal_Tcp(yang::__TcpData data);
-    void deal_Udp(yang::__UdpData data);
+    void deal_Tcp(__TcpData data);
+    void deal_Udp(__UdpData data);
+signals:
+    void sig_startCapture(const pcap_if_t *device);
+    void sig_stopCapture();
 private:
     Ui::CaptureWidget *ui;
-    yang::DumpThread *_dumpThread;
+    DumpThread *_dumpThread;
 };
 
 #endif // CAPTUREWIDGET_H

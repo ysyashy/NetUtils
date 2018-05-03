@@ -2,7 +2,7 @@
 #include <exception>
 #include <winsock2.h>
 
-namespace yang {
+//namespace yang {
 DumpInterface::DumpInterface()
     : _adhandle(NULL),
       _isContinue(true)
@@ -59,19 +59,20 @@ void DumpInterface::stopCapture()
     _isContinue = false;
 }
 
-void DumpInterface::on_packet_received(const pcap_pkthdr *, const u_char *pkt_data)
+void DumpInterface::on_packet_received(const pcap_pkthdr *, const u_char *data)
 {
-    const ip_hdr *ih = (const ip_hdr*)(pkt_data + sizeof(eth_hdr));
+    u_char *pkt_data = const_cast<u_char*>(data);
+    ip_hdr *ih = (ip_hdr*)(pkt_data + sizeof(eth_hdr));
 
     if(6 == ih->protocol) { /* tcp protectol */
-        const tcp_hdr *th = (const tcp_hdr*)(pkt_data + sizeof(eth_hdr) + ih->ihl * 4);
+        tcp_hdr *th = (tcp_hdr*)(pkt_data + sizeof(eth_hdr) + ih->ihl * 4);
         __TcpData netData(
                     ih,
                     th,
                     pkt_data + sizeof(eth_hdr) + ih->ihl * 4 + th->doff * 4);
         on_tcp_received(netData);
     } else if(17 == ih->protocol) { /* udp protectol */
-        const udp_hdr *uh = (const udp_hdr*)(pkt_data+sizeof(eth_hdr) + ih->ihl*4);
+        udp_hdr *uh = (udp_hdr*)(pkt_data+sizeof(eth_hdr) + ih->ihl*4);
         __UdpData netData(
                     ih,
                     uh,
@@ -84,4 +85,4 @@ void DumpInterface::on_packet_received(const pcap_pkthdr *, const u_char *pkt_da
     }
 }
 
-}
+//}

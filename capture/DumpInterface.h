@@ -2,28 +2,33 @@
 #define __DUMPINTERFACE_H
 
 #include <exception>
+#include <QMetaType>
 #include <string>
 #include <pcap.h>
 #include "comstruct.h"
 
-namespace yang {
+//namespace yang {
 
 struct __TcpData {
-    const ip_hdr *ip_h;
-    const tcp_hdr *tcp_h;
-    const u_char *data;
-    __TcpData(const ip_hdr *ih, const tcp_hdr *th, const u_char *d)
+    ip_hdr *ip_h;
+    tcp_hdr *tcp_h;
+    u_char *data;
+    __TcpData(ip_hdr *ih = nullptr, tcp_hdr *th = nullptr, u_char *d = nullptr)
         : ip_h(ih), tcp_h(th), data(d)
     {}
 };
+Q_DECLARE_METATYPE(__TcpData)
+
 struct __UdpData {
-    const ip_hdr *ip_h;
-    const udp_hdr *udp_h;
-    const u_char *data;
-    __UdpData(const ip_hdr *ih, const udp_hdr *uh, const u_char *d)
+    ip_hdr *ip_h;
+    udp_hdr *udp_h;
+    u_char *data;
+    __UdpData(ip_hdr *ih = nullptr, udp_hdr *uh = nullptr, u_char *d = nullptr)
         : ip_h(ih), udp_h(uh), data(d)
     {}
 };
+Q_DECLARE_METATYPE(__UdpData)
+
 enum class PcapErrorType {
     CaptureError,
     FilterError
@@ -57,5 +62,5 @@ private:
     bool _isContinue;
 };
 
-}
+//}
 #endif // __DUMPINTERFACE_H

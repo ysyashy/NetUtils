@@ -4,10 +4,10 @@
 #include <QObject>
 #include "DumpInterface.h"
 
-namespace yang {
+//namespace yang {
 class DumpThread
         : public QObject
-        , public DumpInterface
+        , private DumpInterface
 {
     Q_OBJECT
 public:
@@ -19,8 +19,10 @@ signals:
     void tcp_received(__TcpData data);
     void udp_received(__UdpData data);
 public slots:
+    void slot_startCapture(const pcap_if_t *device);
+    void slot_stopCapture();
 };
 
-}
+//}
 
 #endif // DUMPTHREAD_H
