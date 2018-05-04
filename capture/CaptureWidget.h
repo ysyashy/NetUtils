@@ -2,6 +2,7 @@
 #define __CAPTUREWIDGET_H
 
 #include <QWidget>
+#include <string>
 #include "DumpThread.h"
 namespace Ui {
 class CaptureWidget;
@@ -24,6 +25,8 @@ private slots:
 signals:
     void sig_startCapture(const pcap_if_t *device);
     void sig_stopCapture();
+private:
+    std::string integerToIp(uint32_t a);
 private:
     Ui::CaptureWidget *ui;
     DumpThread *_dumpThread;
