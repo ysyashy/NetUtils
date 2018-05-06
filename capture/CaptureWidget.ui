@@ -16,14 +16,17 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>80</y>
      <width>854</width>
-     <height>370</height>
+     <height>330</height>
     </rect>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
    </property>
   </widget>
   <widget class="QSplitter" name="splitter">

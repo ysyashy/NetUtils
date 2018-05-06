@@ -1,5 +1,6 @@
 #include "SystemDevice.h"
 #include <iostream>
+#include <remote-ext.h>
 
 namespace yang {
 SystemDevice *SystemDevice::_instance = nullptr;

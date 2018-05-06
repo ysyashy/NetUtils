@@ -16,8 +16,8 @@ private:
     virtual void on_tcp_received(__TcpData data) override;
     virtual void on_udp_received(__UdpData data) override;
 signals:
-    void tcp_received(__TcpData data);
-    void udp_received(__UdpData data);
+    void sig_tcpReceived(__TcpData data);
+    void sig_udpReceived(__UdpData data);
 public slots:
     void slot_startCapture(const pcap_if_t *device);
     void slot_stopCapture();

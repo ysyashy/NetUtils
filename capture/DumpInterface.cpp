@@ -1,11 +1,16 @@
-#include "DumpInterface.h"
+#include <fstream>
+#include <QStandardPaths>
+#include <QDebug>
 #include <exception>
-#include <winsock2.h>
+#include <ctime>
+#include "DumpInterface.h"
+#include "SystemDevice.h"
 
 //namespace yang {
 DumpInterface::DumpInterface()
-    : _adhandle(NULL),
-      _isContinue(true)
+    : _adhandle(NULL)
+    , _dump_file(NULL)
+    , _isContinue(true)
 {
 }
 DumpInterface::~DumpInterface()
@@ -15,6 +20,7 @@ DumpInterface::~DumpInterface()
 
 void DumpInterface::capturePacket(const pcap_if_t *dev)
 {
+    _isContinue = true;
     if(NULL != _adhandle) {
         pcap_close(_adhandle);  _adhandle = NULL;
     }
@@ -44,7 +50,7 @@ void DumpInterface::capturePacket(const pcap_if_t *dev)
     if(0 > pcap_setfilter(_adhandle, &fcode)) {
         throw new PcapException("set filter error!", PcapErrorType::FilterError);
     }
-
+    openDumpFile();
     /* 开始抓取数据 */
     int res = 0;
     pcap_pkthdr *pkt_header;
@@ -54,25 +60,51 @@ void DumpInterface::capturePacket(const pcap_if_t *dev)
         on_packet_received(pkt_header, pkt_data);
     }
 }
+void DumpInterface::openDumpFile()
+{
+    /* 设置dump文件名 */
+    time_t times = time(NULL);
+    struct tm *t = localtime(&times);
+    char dump_file_name[128];
+    memset(dump_file_name, 0x00, sizeof(dump_file_name));
+    snprintf(dump_file_name, sizeof(dump_file_name)
+             , "%04d%02d%02d_%02d%02d%02d.pcapng"
+             , t->tm_year+1900, t->tm_mon+1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+    /* 新建文件 */
+    std::string file_path = QStandardPaths::writableLocation(QStandardPaths::TempLocation).toStdString();
+    file_path.append("/").append(dump_file_name);
+    /* 保存文件名 */
+    yang::SystemDevice::getInstance()->setDumpFileName(file_path);
+    _dump_file = pcap_dump_open(_adhandle, file_path.c_str());
+    qDebug() << file_path.c_str();
+    if(NULL == _dump_file) {
+        throw new PcapException("open dump file error!", PcapErrorType::DumpFileError);
+    }
+}
+
 void DumpInterface::stopCapture()
 {
     _isContinue = false;
+    if(NULL != _adhandle) { pcap_close(_adhandle); _adhandle = NULL; }
+    if(NULL != _dump_file) { pcap_dump_close(_dump_file); _dump_file = NULL; }
 }
 
-void DumpInterface::on_packet_received(const pcap_pkthdr *, const u_char *data)
+void DumpInterface::on_packet_received(const pcap_pkthdr *pkt_hdr, const u_char *data)
 {
-    u_char *pkt_data = const_cast<u_char*>(data);
-    ip_hdr *ih = (ip_hdr*)(pkt_data + sizeof(eth_hdr));
+    const char *pkt_data = (const char*)data;
+    const ip_hdr *ih = (const ip_hdr*)(pkt_data + sizeof(eth_hdr));
 
     if(6 == ih->protocol) { /* tcp protectol */
-        tcp_hdr *th = (tcp_hdr*)(pkt_data + sizeof(eth_hdr) + ih->ihl * 4);
+        const tcp_hdr *th = (const tcp_hdr*)(pkt_data + sizeof(eth_hdr) + ih->ihl * 4);
         __TcpData netData(
                     ih,
                     th,
                     pkt_data + sizeof(eth_hdr) + ih->ihl * 4 + th->doff * 4);
         on_tcp_received(netData);
+        pcap_dump((u_char*)_dump_file, pkt_hdr, data);
+        pcap_dump_flush(_dump_file);
     } else if(17 == ih->protocol) { /* udp protectol */
-        udp_hdr *uh = (udp_hdr*)(pkt_data+sizeof(eth_hdr) + ih->ihl*4);
+        const udp_hdr *uh = (const udp_hdr*)(pkt_data+sizeof(eth_hdr) + ih->ihl*4);
         __UdpData netData(
                     ih,
                     uh,

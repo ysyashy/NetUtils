@@ -10,20 +10,20 @@
 //namespace yang {
 
 struct __TcpData {
-    ip_hdr *ip_h;
-    tcp_hdr *tcp_h;
-    u_char *data;
-    __TcpData(ip_hdr *ih = nullptr, tcp_hdr *th = nullptr, u_char *d = nullptr)
+    const ip_hdr *ip_h;
+    const tcp_hdr *tcp_h;
+    const char *data;
+    __TcpData(const ip_hdr *ih = NULL, const tcp_hdr *th = NULL, const char *d = NULL)
         : ip_h(ih), tcp_h(th), data(d)
     {}
 };
 Q_DECLARE_METATYPE(__TcpData)
 
 struct __UdpData {
-    ip_hdr *ip_h;
-    udp_hdr *udp_h;
-    u_char *data;
-    __UdpData(ip_hdr *ih = nullptr, udp_hdr *uh = nullptr, u_char *d = nullptr)
+    const ip_hdr *ip_h;
+    const udp_hdr *udp_h;
+    const char *data;
+    __UdpData(const ip_hdr *ih = NULL, const udp_hdr *uh = NULL, const char *d = NULL)
         : ip_h(ih), udp_h(uh), data(d)
     {}
 };
@@ -31,7 +31,8 @@ Q_DECLARE_METATYPE(__UdpData)
 
 enum class PcapErrorType {
     CaptureError,
-    FilterError
+    FilterError,
+    DumpFileError
 };
 
 class PcapException : public std::exception {
@@ -58,7 +59,9 @@ protected:
     virtual void on_udp_received(__UdpData data) = 0;
 private:
     void on_packet_received(const pcap_pkthdr *pkt_header, const u_char *pkt_data);
+    void openDumpFile();
     pcap_t *_adhandle;
+    pcap_dumper_t  *_dump_file;
     bool _isContinue;
 };
 

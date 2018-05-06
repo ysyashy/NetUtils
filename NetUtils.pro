@@ -13,11 +13,11 @@ TARGET = NetUtils
 TEMPLATE = app
 
 # winpcap
-INCLUDEPATH += "./winpcap/Include"
-# LIBS += -L./winpcap/Lib -lwpcap
-# LIBS += -L./winpcap/Lib -lPacket
-LIBS += D:\c++\NetUtils\winpcap\Lib\wpcap.lib
-LIBS += D:\c++\NetUtils\winpcap\Lib\Packet.lib
+INCLUDEPATH += $$PWD/winpcap/Include
+
+LIBS += $$PWD/winpcap/Lib/wpcap.lib
+LIBS += $$PWD/winpcap/Lib/Packet.lib
+
 # ws2_32.lib Windows Socket
 LIBS += -lws2_32
 
@@ -32,11 +32,12 @@ SOURCES += main.cpp\
     parse/ParseDataPlainText.cpp \
     parse/ParseDataTcpItem.cpp \
     capture/CaptureWidget.cpp \
-    capture/CaptureItem.cpp \
     AdvanceWidget.cpp \
     capture/SystemDevice.cpp \
     capture/DumpInterface.cpp \
-    capture/DumpThread.cpp
+    capture/DumpThread.cpp \
+    capture/DumpOfflineThread.cpp \
+    common/UtilsConfigure.cpp
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
@@ -47,17 +48,18 @@ HEADERS  += NetUtils.h\
     parse/ParseDataPlainText.h \
     parse/ParseDataTcpItem.h \
     capture/CaptureWidget.h \
-    capture/CaptureItem.h \
     AdvanceWidget.h \
     capture/SystemDevice.h \
     capture/comstruct.h \
     capture/DumpInterface.h \
-    capture/DumpThread.h
+    capture/DumpThread.h \
+    inline/utilsinline.h \
+    capture/DumpOfflineThread.h \
+    common/UtilsConfigure.h
 
 RESOURCES += \
     Resources/netutils.qrc
 
 FORMS += \
     capture/CaptureWidget.ui \
-    capture/CaptureItem.ui \
     AdvanceWidget.ui
