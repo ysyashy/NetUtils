@@ -3,6 +3,10 @@
 #include "SendDataTcp.h"
 #include "SendDataItem.h"
 #include "parse/ParseData.h"
+#include "common/UtilsConfigure.h"
+#include "common/RC4.h"
+#include "AdvanceWidget.h"
+#include "common/quicklz.h"
 
 namespace yang {
 SendDataTcp::SendDataTcp(QWidget *parent)
@@ -28,6 +32,10 @@ SendDataTcp::SendDataTcp(QWidget *parent)
     _listWidget = new QListWidget(this);
     _btnSend = new QPushButton(tr("发送"), this);
     _btnAdvance = new QPushButton(tr("高级"), this);
+    connect(_btnAdvance, &QPushButton::clicked, [](){
+        AdvanceWidget *advance = new AdvanceWidget();
+        advance->show();
+    });
     connect(_btnSend, &QPushButton::clicked, this, &SendDataTcp::on_btn_send_clicked);
 
     _listWidget->resize(width()*0.8, height()*0.6);
@@ -65,14 +73,12 @@ void SendDataTcp::addListItem()
 
 void SendDataTcp::on_btn_send_clicked()
 {
-    qDebug() << "btn clicked";
     QString host = _lineEditHost->text();
     int port = _lineEditPort->text().toInt();
     _tcpSocket->connectToHost(QHostAddress(host) , port);
 }
 void SendDataTcp::sendTcpData()
 {
-    qDebug() << "sendTcpData";
     QByteArray bytes;
     for(int idx = 0; idx < _listWidget->count(); idx++) {
         SendDataItem *item = dynamic_cast<SendDataItem*>(_listWidget->itemWidget(_listWidget->item(idx)));
@@ -80,12 +86,48 @@ void SendDataTcp::sendTcpData()
         bytes.append(item->getItemData());
     }
     if(bytes.isEmpty()) return;
-    qDebug() << bytes.size();
+
+    /* 处理加密与压缩: 先压缩，后加密*/
+    int buff_size = bytes.size() * 2;
+    char *buff = new char[buff_size];
+    qDebug() << "SendData before compress:" << bytes.size();
+    UtilsConfigure *config = UtilsConfigure::getInstance();
+    if(CompressType::QuickLZ == config->getCompressType()) { /* quick lz */
+        memset(buff, 0x00, buff_size);
+        for(int i=0; i<bytes.size(); i++) {
+            buff[i] = bytes[i];
+        }
+        char *dst_buff = new char[buff_size];
+        memset(dst_buff, 0x00, buff_size);
+        qlz_state_compress compress_state;
+        size_t len = qlz_compress(buff, dst_buff, bytes.size(), &compress_state);
+        for(int i=0; i<len; i++) {
+            bytes[i] = dst_buff[i];
+        }
+        bytes.resize(len);
+        delete[] dst_buff;
+    } else {
+    }
+    qDebug() << "SendData after compress:" << bytes.size();
+    if(SecretType::RC4 == config->getSecretType()){ /* RC4 */
+        RC4 rc4;
+        rc4.setKey(config->getSecretKey().c_str(), config->getSecretKey().length());
+        memset(buff, 0x00, buff_size);
+        for(int i=0; i<bytes.size(); i++) {
+            buff[i] = bytes[i];
+        }
+        rc4.encrpyt(buff, bytes.size());
+        for(int i=0; i<bytes.size(); i++) {
+            bytes[i] = buff[i];
+        }
+    } else {
+    }
+    delete[] buff;
+
     _tcpSocket->write(bytes);
 }
 void SendDataTcp::receivedTcpData()
 {
-    qDebug() << "received tcp data";
     QByteArray bytes = _tcpSocket->readAll();
     ParseData *parseData = new ParseData(bytes);
     parseData->show();

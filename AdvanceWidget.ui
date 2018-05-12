@@ -16,7 +16,7 @@
   <widget class="QComboBox" name="cboxCompress">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>70</x>
      <y>80</y>
      <width>69</width>
      <height>22</height>
@@ -24,29 +24,19 @@
    </property>
    <item>
     <property name="text">
+     <string>none</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>quicklz</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>fastlz</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>snappy</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>LZO/miniLZO</string>
     </property>
    </item>
   </widget>
   <widget class="QComboBox" name="cboxSecret">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>70</x>
      <y>120</y>
      <width>69</width>
      <height>22</height>
@@ -54,27 +44,12 @@
    </property>
    <item>
     <property name="text">
+     <string>none</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>RC4</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>RC5</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>DES</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>AES</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>DES</string>
     </property>
    </item>
   </widget>
@@ -133,7 +108,7 @@
   <widget class="QLineEdit" name="lineEditSecret">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>150</x>
      <y>120</y>
      <width>113</width>
      <height>20</height>

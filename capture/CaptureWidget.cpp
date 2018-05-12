@@ -8,6 +8,7 @@
 #include "SystemDevice.h"
 #include "parse/ParseData.h"
 #include "inline/utilsinline.h"
+#include "AdvanceWidget.h"
 
 CaptureWidget::CaptureWidget(QWidget *parent)
     : QWidget(parent)
@@ -120,10 +121,22 @@ void CaptureWidget::on_btnStart_clicked()
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
     _itemCounts = 0;
+    /* 读取筛选器 */
+    std::stringstream sb;
+//     and ip host 192.168.42.230 and tcp port 80 and len >= 54
+    if(!ui->lineEditHost->text().isEmpty()) {
+        sb << " and ip host " << ui->lineEditHost->text().toStdString();
+    }
+    if(!ui->lineEditPort->text().isEmpty()) {
+        sb << " and tcp port " << ui->lineEditPort->text().toInt();
+    }
+    if(!ui->lineEditLength->text().isEmpty()) {
+        sb << " and len >= " << ui->lineEditLength->text().toInt() + 54;
+    }
     /* ...... */
     int index = ui->comboBoxInter->currentIndex();
     const pcap_if_t *device = yang::SystemDevice::getInstance()->getAllDevs().at(index);
-    emit sig_startCapture(device);
+    emit sig_startCapture(device, QString(sb.str().c_str()));
 }
 std::string CaptureWidget::integerToIp(uint32_t net_addr)
 {
@@ -183,5 +196,6 @@ void CaptureWidget::deal_Udp(__UdpData)
 
 void CaptureWidget::on_btnAdvance_clicked()
 {
-
+    AdvanceWidget *advance = new AdvanceWidget();
+    advance->show();
 }

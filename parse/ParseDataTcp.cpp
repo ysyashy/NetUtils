@@ -29,6 +29,11 @@ ParseDataTcp::ParseDataTcp(const QByteArray &datas, QWidget *parent)
     initComboBox();
     initTableWidget();
     connect(_btnAdd, &QPushButton::clicked, this, &ParseDataTcp::addCustomerItem);
+    connect(_lineEdit, &QLineEdit::textChanged, [this](const QString &str){
+        if(str.toInt() > 512) {
+            _lineEdit->setText(std::to_string(512).c_str());
+        }
+    });
 }
 void ParseDataTcp::initTableWidget()
 {
@@ -89,7 +94,7 @@ char* ParseDataTcp::getDigital(int length)
 void ParseDataTcp::addCustomerItem()
 {
     QString type = _comboBox->currentText();
-    char value[256];
+    char value[516];
     memset(value, 0x00, sizeof(value));
     char *ptr = NULL;
     if(0 == type.compare("string")) {
@@ -108,7 +113,7 @@ void ParseDataTcp::addCustomerItem()
             ret.append(c);
         }
         _currIndex += len;
-        qDebug() << ret.c_str();
+        if(ret.empty()) return;
         snprintf(value, ret.length()+1, "%s", ret.c_str());
     } else if(0 == type.compare("char")) {
         ptr = getDigital(1);
@@ -162,7 +167,6 @@ void ParseDataTcp::addCustomerItem()
         qDebug() << "unknow";
     }
     delete []ptr;
-    qDebug() << value;
 
     /* 添加到_tableWidget中去 */
     if(_currCount/_tableWidget->columnCount() >= _tableWidget->rowCount()) {

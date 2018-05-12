@@ -52,7 +52,7 @@ public:
     DumpInterface();
     ~DumpInterface();
 public:
-    void capturePacket(const pcap_if_t *dev);
+    void capturePacket(const pcap_if_t *dev, const std::string &filter);
     void stopCapture();
 protected:
     virtual void on_tcp_received(__TcpData data) = 0;

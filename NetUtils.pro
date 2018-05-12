@@ -37,7 +37,9 @@ SOURCES += main.cpp\
     capture/DumpInterface.cpp \
     capture/DumpThread.cpp \
     capture/DumpOfflineThread.cpp \
-    common/UtilsConfigure.cpp
+    common/UtilsConfigure.cpp \
+    common/RC4.cpp \
+    common/quicklz.c
 
 HEADERS  += NetUtils.h\
         http/SendDataHttp.h\
@@ -55,7 +57,9 @@ HEADERS  += NetUtils.h\
     capture/DumpThread.h \
     inline/utilsinline.h \
     capture/DumpOfflineThread.h \
-    common/UtilsConfigure.h
+    common/UtilsConfigure.h \
+    common/RC4.h \
+    common/quicklz.h
 
 RESOURCES += \
     Resources/netutils.qrc

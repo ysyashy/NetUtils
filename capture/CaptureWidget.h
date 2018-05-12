@@ -35,7 +35,7 @@ private slots:
     void slot_requestDetials(uint32_t index);
 signals:
     /* 网络数据抓取线程 */
-    void sig_startCapture(const pcap_if_t *device);
+    void sig_startCapture(const pcap_if_t *device, const QString &filter);
     void sig_stopCapture();
     /* 本地数据读取线程 */
     void sig_requestData(uint32_t index);

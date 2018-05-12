@@ -18,7 +18,7 @@ DumpInterface::~DumpInterface()
     if(NULL != _adhandle) { pcap_close(_adhandle); _adhandle = NULL; }
 }
 
-void DumpInterface::capturePacket(const pcap_if_t *dev)
+void DumpInterface::capturePacket(const pcap_if_t *dev, const std::string &filter)
 {
     _isContinue = true;
     if(NULL != _adhandle) {
@@ -43,8 +43,9 @@ void DumpInterface::capturePacket(const pcap_if_t *dev)
         netmask = 0x00ffffff;
     }
     struct bpf_program fcode;
-    const char *packet_filter = "ip and tcp";
-    if(0 > pcap_compile(_adhandle, &fcode, packet_filter, 1, netmask)) {
+    std::string packet_filter = "tcp and ip";
+    packet_filter.append(filter);
+    if(0 > pcap_compile(_adhandle, &fcode, packet_filter.c_str(), 1, netmask)) {
         throw new PcapException("compile filter error", PcapErrorType::FilterError);
     }
     if(0 > pcap_setfilter(_adhandle, &fcode)) {

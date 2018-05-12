@@ -15,9 +15,9 @@ void DumpThread::on_udp_received(__UdpData data)
     emit sig_udpReceived(data);
 }
 
-void DumpThread::slot_startCapture(const pcap_if_t *device)
+void DumpThread::slot_startCapture(const pcap_if_t *device, const QString &filter)
 {
-    capturePacket(device);
+    capturePacket(device, filter.toStdString());
 }
 void DumpThread::slot_stopCapture()
 {

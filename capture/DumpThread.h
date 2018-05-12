@@ -19,7 +19,7 @@ signals:
     void sig_tcpReceived(__TcpData data);
     void sig_udpReceived(__UdpData data);
 public slots:
-    void slot_startCapture(const pcap_if_t *device);
+    void slot_startCapture(const pcap_if_t *device, const QString &filter);
     void slot_stopCapture();
 };
 
