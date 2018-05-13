@@ -77,12 +77,12 @@ char* ParseDataTcp::getDigital(int length)
     if(length + _currIndex > _datas.size()) return NULL;
     int r_idx;
     char *ret = new char[16];
-    memset(ret, 0x00, 8);
-    if(!isBigEndian()) { /* 小端 */
+    memset(ret, 0x00, 16);
+    if(!isLittleEndian()) { /* 大端 */
         for(r_idx=0; r_idx<length; r_idx++) {
             ret[r_idx] = _datas.at(_currIndex + r_idx);
         }
-    } else { /* 大端 */
+    } else { /* 小端 */
         for(r_idx = length-1; r_idx>=0; r_idx--) {
             ret[r_idx] = _datas.at(_currIndex + length - r_idx -1);
         }

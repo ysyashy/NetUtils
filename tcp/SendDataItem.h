@@ -30,7 +30,6 @@ private:
     void initComboBox();
 signals:
     void removeItemSignal();
-    void insertItemSignal();
 private slots:
     void remove_btn_clicked();
     void text_value_changed(const QString &text);   /* 编辑框内容发生变化时，调用 */

@@ -56,6 +56,7 @@ void SendDataHttp::request_by_post(const QString &text)
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QNetworkRequest request;
     request.setUrl(QUrl(QString(tr(url.c_str()))));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("text/plain;"));
 
     manager->post(request, QByteArray(params.c_str(), params.size()));
     connect(manager, &QNetworkAccessManager::finished, this, &SendDataHttp::received_Data);

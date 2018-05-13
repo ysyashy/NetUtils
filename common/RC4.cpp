@@ -14,8 +14,6 @@ void RC4::setKey(const char *key, int keyLen)
 		_box[i] = i;
 		k[i] = _key[i % _keyLen];
 	}
-
-	unsigned char tmp = 0;
 	for (int i = 0, j = 0; i < MAX_LEN; i++) {
 		j = (j + _box[i] + k[i]) % MAX_LEN;
 		std::swap(_box[i], _box[j]);

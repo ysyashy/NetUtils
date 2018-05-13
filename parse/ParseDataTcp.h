@@ -26,7 +26,7 @@ private:
     void initComboBox();
     void addCustomerItem();
     char* getDigital(int length);
-    inline bool isBigEndian() {
+    inline bool isLittleEndian() {
         int32_t a = 1;
         char *p = (char *)&a;
         return (1 == *p);
