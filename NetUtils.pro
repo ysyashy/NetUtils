@@ -67,3 +67,5 @@ RESOURCES += \
 FORMS += \
     capture/CaptureWidget.ui \
     AdvanceWidget.ui
+
+RC_ICONS = Resources/qt_icon.ico
